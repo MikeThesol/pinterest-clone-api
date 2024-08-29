@@ -1,4 +1,4 @@
-package com.thesol.pinterest_clone.security;
+package com.thesol.pinterest_clone.security.jwt;
 
 import com.thesol.pinterest_clone.dto.JwtAuthenticationDto;
 import io.jsonwebtoken.*;

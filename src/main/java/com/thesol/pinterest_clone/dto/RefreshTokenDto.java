@@ -1,2 +1,8 @@
-package com.thesol.pinterest_clone.dto;public class RefreshTokenDto {
+package com.thesol.pinterest_clone.dto;
+
+import lombok.Data;
+
+@Data
+public class RefreshTokenDto {
+    private String refreshToken;
 }
