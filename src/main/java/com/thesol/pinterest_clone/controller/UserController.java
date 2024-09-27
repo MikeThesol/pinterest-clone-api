@@ -1,6 +1,7 @@
 package com.thesol.pinterest_clone.controller;
 
 import com.thesol.pinterest_clone.Services.UserService;
+import com.thesol.pinterest_clone.dto.UserDto;
 import com.thesol.pinterest_clone.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -23,13 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
-        return userService.getUserById(id);
-    }
-
-    @GetMapping("/email/{email}")
-    public User getUserByEmail(@PathVariable String email) throws ChangeSetPersister.NotFoundException {
-        return userService.getUserByEmail(email);
+    public UserDto getUserById(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+        return UserDto.createUserDto(userService.getUserById(id));
     }
 
     @GetMapping("/{id}/followers")
@@ -50,5 +46,10 @@ public class UserController {
         User user = userService.getUserByEmail(username);
         boolean isSubscribed = userService.toggleSubscription(user.getId(), targetId);
         return ResponseEntity.ok(isSubscribed);
+    }
+
+    @GetMapping("/{id}/subscriptions")
+    public Set<User> getSubscriptions(@PathVariable Long id) throws ChangeSetPersister.NotFoundException {
+        return null;
     }
 }
