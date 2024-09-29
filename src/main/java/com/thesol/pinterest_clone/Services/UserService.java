@@ -3,6 +3,7 @@ package com.thesol.pinterest_clone.Services;
 import com.thesol.pinterest_clone.dto.JwtAuthenticationDto;
 import com.thesol.pinterest_clone.dto.RefreshTokenDto;
 import com.thesol.pinterest_clone.dto.UserCredentialsDto;
+import com.thesol.pinterest_clone.models.Post;
 import com.thesol.pinterest_clone.models.User;
 import com.thesol.pinterest_clone.repositories.UserRepository;
 import com.thesol.pinterest_clone.security.jwt.JwtService;
@@ -13,8 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -86,6 +86,19 @@ public class UserService {
             userRepository.save(user);
             return true;
         }
+    }
+
+    public Set<Post> feed(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found: " + id));
+        Set<Post> feed = new HashSet<>();
+        Set<User> following = user.getFollowing();
+        for(User userFollowing : following) {
+            feed.addAll(userFollowing.getPosts());
+            for(User follower : userFollowing.getFollowers()) {
+                feed.addAll(follower.getLikedPosts());
+            }
+        }
+        return feed;
     }
 
 }

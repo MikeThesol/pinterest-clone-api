@@ -28,4 +28,6 @@ public class User {
     private Set<User> following;
     @OneToMany
     private List<Post> posts;
+    @OneToMany
+    private List<Post> likedPosts;
 }
